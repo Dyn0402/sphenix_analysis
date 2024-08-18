@@ -108,10 +108,10 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   mbd_t0 = -999.0;
   mbd_t0_err = -999.0;
   if (mbdout) {
-    mbd_z_vtx = mbdout->getZVtx();
-    mbd_z_vtx_err = mbdout->getZVtxErr();
-    mbd_t0 = mbdout->getT0();
-    mbd_t0_err = mbdout->getT0Err();
+    mbd_z_vtx = mbdout->get_zvtx();
+    mbd_z_vtx_err = mbdout->get_zvtxerr();
+    mbd_t0 = mbdout->get_t0();
+    mbd_t0_err = mbdout->get_t0err();
   }
 
   if (p_gl1)
@@ -137,27 +137,27 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
       for (int c = 0; c < p_zdc->iValue(0, "CHANNELS"); c++)
       {
         std::vector<float> waveform;  // Chris: preallocation = speed improvement
-        waveform.reserve(p->iValue(0, "SAMPLES"));
+        waveform.reserve(p_zdc->iValue(0, "SAMPLES"));
 
-        for (int s = 0; s < p->iValue(0, "SAMPLES"); s++)
+        for (int s = 0; s < p_zdc->iValue(0, "SAMPLES"); s++)
         {
-          waveform.push_back(p->iValue(s, channel));
+          waveform.push_back(p_zdc->iValue(s, c));
         }  // end sample loop
         waveforms.push_back(waveform);
       }  // end channel loop
 
-      std::vector<std::vector<float>> fitresults_zdc;
-      fitresults_zdc = WaveformProcessingFast->calo_processing_fast(waveforms);
+//      std::vector<std::vector<float>> fitresults_zdc;
+//      fitresults_zdc = WaveformProcessingFast->calo_processing_fast(waveforms);
+//
+//      std::vector<float> result;
+//      result = fitresults_zdc.at(0);
+//
+//      std::vector<float> resultFast = anaWaveformFast(p_zdc, c);  // fast waveform fitting
+//      float signalFast = resultFast.at(0);
+//      float timingFast = resultFast.at(1);
+//      float pedFast = resultFast.at(2);
 
-      std::vector<float> result;
-      result = fitresults_zdc.at(0);
-
-      std::vector<float> resultFast = anaWaveformFast(p_zdc, c);  // fast waveform fitting
-      float signalFast = resultFast.at(0);
-      float timingFast = resultFast.at(1);
-      float pedFast = resultFast.at(2);
-
-      }  // end channel loop
+//      }  // end channel loop
       polWaveforms->Fill();
     }  // end if p_zdc good
   }  // end if p_gl1 good
