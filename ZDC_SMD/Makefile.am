@@ -11,13 +11,13 @@ AM_LDFLAGS = \
   -L$(OFFLINE_MAIN)/lib64
 
 pkginclude_HEADERS = \
-  ZDCNeutronLocPol.h
+  ZDC_SMD.h
 
 lib_LTLIBRARIES = \
-  libZDCNeutronLocPol.la
+  libZDC_SMD.la
 
 libZDCNeutronLocPol_la_SOURCES = \
-  ZDCNeutronLocPol.cc
+  ZCD_SMD.cc
 
 libZDCNeutronLocPol_la_LIBADD = \
   -lphool \
@@ -34,7 +34,7 @@ noinst_PROGRAMS = \
   testexternals
 
 testexternals_SOURCES = testexternals.cc
-testexternals_LDADD   = libZDCNeutronLocPol.la
+testexternals_LDADD   = libZDC_SMD.la
 
 testexternals.cc:
 	echo "//*** this is a generated file. Do not commit, do not edit" > $@
