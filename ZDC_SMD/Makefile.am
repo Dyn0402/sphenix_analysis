@@ -17,7 +17,7 @@ lib_LTLIBRARIES = \
   libZDC_SMD.la
 
 libZDC_SMD_la_SOURCES = \
-  ZCD_SMD.cc
+  ZDC_SMD.cc
 
 libZDC_SMD_la_LIBADD = \
   -lphool \
