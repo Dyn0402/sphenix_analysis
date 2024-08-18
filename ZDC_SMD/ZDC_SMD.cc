@@ -98,10 +98,10 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   zdc_cont = findNode::getClass<CaloPacketContainerv1>(topNode, "ZDCPackets");
 
   // Find MBD Node
-  mbdNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "MBD"));
+//  mbdNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "MBD"));
 
   // Get MBD/BBC Output Objects
-  mbdout = findNode::getClass<MbdOut>(mbdNode, "MbdOut");
+  mbdout = findNode::getClass<MbdOut>(topNode, "MbdOut");
 
   mbd_z_vtx = -999.0;
   mbd_z_vtx_err = -999.0;

@@ -16,6 +16,7 @@ class PHCompositeNode;
 class Gl1Packet;
 class CaloPacketContainer;
 class CaloPacket;
+class MbdOut;
 class TH1;
 class TH2;
 class TTree;
@@ -57,7 +58,7 @@ class ZDC_SMD : public SubsysReco
 
   Gl1Packet *p_gl1;
   CaloPacketContainer *zdc_cont;
-  PHCompositeNode *mbdNode;
+//  PHCompositeNode *mbdNode;
   MbdOut *mbdout;
 
   std::vector<float> anaWaveformFast(CaloPacket *p, const int channel);
