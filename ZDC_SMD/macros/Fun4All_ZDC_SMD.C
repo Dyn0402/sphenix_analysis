@@ -37,7 +37,7 @@ void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_
   
   ZDC_SMD *zdc_smd = new ZDC_SMD();
   zdc_smd->setFileName(outname);
-  zdc_smd->setGainMatch("/sphenix/user/dloomis/analysis/ZDCNeutronLocPol/SMDrelativegains.dat");
+//  zdc_smd->setGainMatch("/sphenix/user/dloomis/analysis/ZDCNeutronLocPol/SMDrelativegains.dat");
   se->registerSubsystem(zdc_smd);
 
   if (startEvent > 0)
