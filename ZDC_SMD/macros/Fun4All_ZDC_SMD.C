@@ -1,5 +1,5 @@
-#ifndef FUN4ALL_ZDCNEUTRONLOCPOL_C
-#define FUN4ALL_ZDCNEUTRONLOCPOL_C
+#ifndef FUN4ALL_ZDC_SMD_C
+#define FUN4ALL_ZDC_SMD_C
 
 #include <zdc_smd/ZDC_SMD.h>
 
@@ -21,10 +21,10 @@
 // cppcheck-suppress unknownMacro
 R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(libfun4allraw.so)
-R__LOAD_LIBRARY(libZDCNeutronLocPol.so)
+R__LOAD_LIBRARY(libZDC_SMD.so)
 
 
-void Fun4All_ZDCNeutronLocPol(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_2024p001-00042797-0000.root", const std::string &outname = "zdcneutronlocpol_42797_0000.root", int startEvent = 0, int nEvents = 10000)
+void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_2024p001-00042797-0000.root", const std::string &outname = "zdc_smd_42797_0000.root", int startEvent = 0, int nEvents = 10000)
 
 {
 
