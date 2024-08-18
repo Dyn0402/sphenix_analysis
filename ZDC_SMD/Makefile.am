@@ -16,10 +16,10 @@ pkginclude_HEADERS = \
 lib_LTLIBRARIES = \
   libZDC_SMD.la
 
-libZDCNeutronLocPol_la_SOURCES = \
+libZDC_SMD_la_SOURCES = \
   ZCD_SMD.cc
 
-libZDCNeutronLocPol_la_LIBADD = \
+libZDC_SMD_la_LIBADD = \
   -lphool \
   -lffarawobjects \
   -lfun4all \
