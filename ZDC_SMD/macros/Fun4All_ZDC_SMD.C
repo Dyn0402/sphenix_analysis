@@ -49,6 +49,8 @@ void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_
   se->run(nEvents);  
   se->End();
   se->PrintTimer();
+  se->Print();
+  std::cout << "Ran " << se->EventCounter() << " events" << std::endl;
   delete se;
   std::cout << "All done!" << std::endl;
   gSystem->Exit(0);

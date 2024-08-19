@@ -104,6 +104,11 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   // Get MBD/BBC Output Objects
   mbdout = findNode::getClass<MbdOut>(topNode, "MbdOut");
 
+  std::cout << "Event: " << evtcnt << std::endl;
+  std::cout << "GL1Packet: " << p_gl1 << std::endl;
+  std::cout << "ZDCPackets: " << zdc_cont << std::endl;
+  std::cout << "MbdOut: " << mbdout << std::endl;
+
   mbd_z_vtx = -999.0;
   mbd_z_vtx_err = -999.0;
   mbd_t0 = -999.0;
@@ -164,6 +169,8 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   }  // end if p_gl1 good
 
   evtcnt++;
+
+  std::cout << "Event: " << evtcnt << " ok" std::endl;
 
   return Fun4AllReturnCodes::EVENT_OK;
 }
