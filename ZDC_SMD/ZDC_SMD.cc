@@ -20,7 +20,8 @@
 #include <caloreco/CaloWaveformFitting.h>
 #include <ffarawobjects/CaloPacketContainerv1.h>
 #include <ffarawobjects/CaloPacketv1.h>
-#include <ffarawobjects/Gl1Packetv1.h>
+//#include <ffarawobjects/Gl1Packetv1.h>
+#include <ffarawobjects/Gl1Packetv2.h>
 #include <fun4all/Fun4AllReturnCodes.h>
 
 #include <Event/packet.h>
@@ -94,7 +95,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
     std::cout << "Event: " << evtcnt << std::endl;
   }
 
-  p_gl1 = findNode::getClass<Gl1Packetv1>(topNode, "GL1Packet");
+  p_gl1 = findNode::getClass<Gl1Packetv2>(topNode, "GL1Packet");
   zdc_cont = findNode::getClass<CaloPacketContainerv1>(topNode, "ZDCPackets");
 
   // Find MBD Node
