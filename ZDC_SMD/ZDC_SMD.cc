@@ -104,7 +104,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   // Get MBD/BBC Output Objects
   mbdout = findNode::getClass<MbdOut>(topNode, "MbdOut");
 
-  std::cout << "Event: " << evtcnt << std::endl;
+  std::cout << std::endl << "Event: " << evtcnt << std::endl;
   std::cout << "GL1Packet: " << p_gl1 << std::endl;
   std::cout << "ZDCPackets: " << zdc_cont << std::endl;
   std::cout << "MbdOut: " << mbdout << std::endl;
@@ -123,12 +123,14 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   if (p_gl1)
   {
     bunchnumber = p_gl1->getBunchNumber();
+    std::cout << "Bunch number: " << bunchnumber << std::endl;
     if (evtcnt % 1000 == 0)
     {
       std::cout << bunchnumber << std::endl;
     }
     if (zdc_cont->get_npackets() != 1)
     {
+      std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
       return Fun4AllReturnCodes::EVENT_OK;
     }
 
@@ -139,6 +141,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
       waveforms.clear();
       waveforms.reserve(p_zdc->iValue(0, "CHANNELS"));  // Chris: preallocation = speed improvement
 
+      std::cout << "Getting ZDC waveforms" << std::endl;
       // in this for loop we get: zdc_adc and smd_adc
       for (int c = 0; c < p_zdc->iValue(0, "CHANNELS"); c++)
       {
@@ -151,6 +154,8 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
         }  // end sample loop
         waveforms.push_back(waveform);
       }  // end channel loop
+
+      std::cout << "ZDC waveforms: " << waveforms.size() << std::endl;
 
 //      std::vector<std::vector<float>> fitresults_zdc;
 //      fitresults_zdc = WaveformProcessingFast->calo_processing_fast(waveforms);
