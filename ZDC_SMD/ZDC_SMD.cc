@@ -170,7 +170,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
 
   evtcnt++;
 
-  std::cout << "Event: " << evtcnt << " ok" std::endl;
+  std::cout << "Event: " << evtcnt << " ok" << std::endl;
 
   return Fun4AllReturnCodes::EVENT_OK;
 }
