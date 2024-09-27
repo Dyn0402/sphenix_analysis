@@ -100,9 +100,10 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
 
   // Find MBD Node
 //  mbdNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "MBD"));
+  mbdNode = findNode::getClass<PHCompositeNode>(topNode, "MBDPackets");
 
   // Get MBD/BBC Output Objects
-  mbdout = findNode::getClass<MbdOut>(topNode, "MbdOut");
+  mbdout = findNode::getClass<MbdOut>(mdbNode, "MbdOut");
 
   std::cout << std::endl << "Event: " << evtcnt << std::endl;
   std::cout << "GL1Packet: " << p_gl1 << std::endl;
