@@ -4,6 +4,8 @@
 #define OFFLINESMDTESTING_DST_H
 
 #include <fun4all/SubsysReco.h>
+#include <globalvertex/MbdVertex.h>
+#include <globalvertex/MbdVertexMapv1.h>
 
 #include <string>
 #include <cmath>
@@ -16,7 +18,12 @@ class PHCompositeNode;
 class Gl1Packet;
 class CaloPacketContainer;
 class CaloPacket;
+
 class MbdOut;
+
+class MbdVertex;
+class MbdVertexMap;
+
 class TH1;
 class TH2;
 class TTree;
@@ -60,6 +67,8 @@ class ZDC_SMD : public SubsysReco
   CaloPacketContainer *zdc_cont;
 //  PHCompositeNode *mbdNode;
   MbdOut *mbdout;
+  MbdVertexMapv1 *m_mbdvtxmap = nullptr;
+  MbdVertex *m_mbdvtx = nullptr;
 
   std::vector<float> anaWaveformFast(CaloPacket *p, const int channel);
 

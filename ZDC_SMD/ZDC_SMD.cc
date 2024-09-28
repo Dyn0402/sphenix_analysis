@@ -100,10 +100,10 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
 
   // Find MBD Node
 //  mbdNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "MBD"));
-  mbdNode = findNode::getClass<PHCompositeNode>(topNode, "MBDPackets");
+//  mbdNode = findNode::getClass<PHCompositeNode>(topNode, "MBDPackets");
 
   // Get MBD/BBC Output Objects
-  mbdout = findNode::getClass<MbdOut>(mdbNode, "MbdOut");
+//  mbdout = findNode::getClass<MbdOut>(mdbNode, "MbdOut");
 
   std::cout << std::endl << "Event: " << evtcnt << std::endl;
   std::cout << "GL1Packet: " << p_gl1 << std::endl;
@@ -114,12 +114,12 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   mbd_z_vtx_err = -999.0;
   mbd_t0 = -999.0;
   mbd_t0_err = -999.0;
-  if (mbdout) {
-    mbd_z_vtx = mbdout->get_zvtx();
-    mbd_z_vtx_err = mbdout->get_zvtxerr();
-    mbd_t0 = mbdout->get_t0();
-    mbd_t0_err = mbdout->get_t0err();
-  }
+//  if (mbdout) {
+//    mbd_z_vtx = mbdout->get_zvtx();
+//    mbd_z_vtx_err = mbdout->get_zvtxerr();
+//    mbd_t0 = mbdout->get_t0();
+//    mbd_t0_err = mbdout->get_t0err();
+//  }
 
   if (p_gl1)
   {
@@ -134,6 +134,23 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
       std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
       return Fun4AllReturnCodes::EVENT_OK;
     }
+
+      m_mbdvtxmap = findNode::getClass<MbdVertexMapv1>(topNode, "MbdVertexMap");
+      if (!m_mbdvtxmap)
+      {
+        std::cout << "Error, can't find MbdVertexMap" << std::endl;
+        exit(1);
+      }
+
+      std::cout << "MbdVertexMap size: " << m_mbdvtxmap->size() << std::endl;
+      for (MbdVertexMap::ConstIter biter = m_mbdvtxmap->begin(); biter != m_mbdvtxmap->end(); ++biter)
+      {
+        m_mbdvtx = biter->second;
+        mbd_z_vtx = m_mbdvtx->get_z();
+        mbd_z_vtx_err = m_mbdvtx->get_z_err();
+        mbd_t0 = m_mbdvtx->get_t();
+        mbd_t0_err = m_mbdvtx->get_t_err();
+      }
 
     CaloPacket *p_zdc = zdc_cont->getPacket(0);
 
