@@ -14,6 +14,7 @@
 
 #include <phool/recoConsts.h>
 
+#include <ffamodules/CDBInterface.h>
 #include <mbd/MbdReco.h>
 
 #include <iostream>
@@ -38,6 +39,11 @@ void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_
   in1->AddFile(fname);
   se->registerInputManager(in1);
 
+  recoConsts *rc = recoConsts::instance();
+
+  rc->set_StringFlag("CDB_GLOBALTAG", dbtag);
+  CDBInterface::instance()->Verbosity(1);
+
   // MBD/BBC Reconstruction
   MbdReco *mbdreco = new MbdReco();
   se->registerSubsystem(mbdreco);
@@ -59,6 +65,7 @@ void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_
   se->Print();
   std::cout << "Ran " << se->EventCounter() << " events" << std::endl;
   delete se;
+  CDBInterface::instance()->Print();  // print used DB files
   std::cout << "All done!" << std::endl;
   gSystem->Exit(0);
 
