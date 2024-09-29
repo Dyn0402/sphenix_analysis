@@ -14,6 +14,8 @@
 
 #include <phool/recoConsts.h>
 
+#include <mbd/MbdReco.h>
+
 #include <iostream>
 #include <string>
 #include <cstdio> 
@@ -22,6 +24,7 @@
 R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(libfun4allraw.so)
 R__LOAD_LIBRARY(libZDC_SMD.so)
+R__LOAD_LIBRARY(libmbd.so)
 
 
 void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_2024p001-00042797-0000.root", const std::string &outname = "zdc_smd_42797_0000.root", int startEvent = 0, int nEvents = 10000)
@@ -34,6 +37,10 @@ void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_
   Fun4AllInputManager *in1 = new Fun4AllDstInputManager("in1");
   in1->AddFile(fname);
   se->registerInputManager(in1);
+
+  // MBD/BBC Reconstruction
+  MbdReco *mbdreco = new MbdReco();
+  se->registerSubsystem(mbdreco);
   
   ZDC_SMD *zdc_smd = new ZDC_SMD();
   zdc_smd->setFileName(outname);
