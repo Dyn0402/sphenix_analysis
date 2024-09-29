@@ -3,6 +3,19 @@
 
 #include <zdc_smd/ZDC_SMD.h>
 
+//  -----------------------
+
+#include <G4_Input.C>
+#include <Calo_Calib.C>
+
+#include <caloreco/CaloTowerBuilder.h>
+
+#include <caloreco/CaloTowerCalib.h>
+#include <caloreco/CaloTowerStatus.h>
+#include <zdcinfo/ZdcReco.h>
+
+//  -----------------------
+
 #include <fun4allraw/Fun4AllPrdfInputManager.h>
 #include <fun4all/Fun4AllDstInputManager.h>
 #include <fun4all/Fun4AllDstOutputManager.h>
@@ -27,6 +40,10 @@ R__LOAD_LIBRARY(libfun4allraw.so)
 R__LOAD_LIBRARY(libZDC_SMD.so)
 R__LOAD_LIBRARY(libmbd.so)
 
+//  -----------------------
+R__LOAD_LIBRARY(libzdcinfo.so)
+R__LOAD_LIBRARY(libcalo_reco.so)
+//  -----------------------
 
 void Fun4All_ZDC_SMD(
     const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_2024p001-00042797-0000.root",

@@ -92,7 +92,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
 //  if (evtcnt > 500) { exit(0); }  // Kill early for testing
 
   // std::cout << "ZDC_SMD::process_event(PHCompositeNode *topNode) Processing Event" << std::endl;
-  if (evtcnt % 10000 == 0)
+  if (evtcnt % 1000 == 0)
   {
     std::cout << "Event: " << evtcnt << std::endl;
   }
@@ -127,10 +127,10 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   {
     bunchnumber = p_gl1->getBunchNumber();
 //    std::cout << "Bunch number: " << bunchnumber << std::endl;
-    if (evtcnt % 1000 == 0)
-    {
-      std::cout << bunchnumber << std::endl;
-    }
+//    if (evtcnt % 1000 == 0)
+//    {
+//      std::cout << bunchnumber << std::endl;
+//    }
     if (zdc_cont->get_npackets() != 1)
     {
       std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
