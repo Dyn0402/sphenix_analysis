@@ -137,7 +137,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
       return Fun4AllReturnCodes::EVENT_OK;
     }
 
-//      m_mbdvtxmap = findNode::getClass<MbdVertexMapv1>(topNode, "MbdVertexMap");
+      m_mbdvtxmap = findNode::getClass<MbdVertexMapv1>(topNode, "MbdVertexMap");
       if (!m_mbdvtxmap)
       {
         std::cout << "Error, can't find MbdVertexMap" << std::endl;
