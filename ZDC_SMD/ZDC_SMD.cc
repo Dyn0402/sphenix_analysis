@@ -3,10 +3,10 @@
 #include <calobase/TowerInfoDefs.h>
 #include <caloreco/CaloWaveformFitting.h>
 
-#include <mbd/MbdOut.h>
-#include <mbd/MbdPmtContainer.h>
-#include <mbd/MbdGeom.h>
-#include <mbd/MbdPmtHit.h>
+//#include <mbd/MbdOut.h>
+//#include <mbd/MbdPmtContainer.h>
+//#include <mbd/MbdGeom.h>
+//#include <mbd/MbdPmtHit.h>
 
 /// Tracking includes
 //#include <globalvertex/GlobalVertex.h>
@@ -108,7 +108,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   std::cout << std::endl << "Event: " << evtcnt << std::endl;
   std::cout << "GL1Packet: " << p_gl1 << std::endl;
   std::cout << "ZDCPackets: " << zdc_cont << std::endl;
-  std::cout << "MbdOut: " << mbdout << std::endl;
+//  std::cout << "MbdOut: " << mbdout << std::endl;
 
   mbd_z_vtx = -999.0;
   mbd_z_vtx_err = -999.0;
@@ -129,6 +129,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
     {
       std::cout << bunchnumber << std::endl;
     }
+    if (ectcnt == 1200) { exit(0); }  // Kill early
     if (zdc_cont->get_npackets() != 1)
     {
       std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
@@ -139,13 +140,13 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
       if (!m_mbdvtxmap)
       {
         std::cout << "Error, can't find MbdVertexMap" << std::endl;
-        exit(1);
       }
 
       std::cout << "MbdVertexMap size: " << m_mbdvtxmap->size() << std::endl;
       for (MbdVertexMap::ConstIter biter = m_mbdvtxmap->begin(); biter != m_mbdvtxmap->end(); ++biter)
       {
         m_mbdvtx = biter->second;
+        std::cout << "MbdVertex: " << m_mbdvtx->get_z() << " +/- " << m_mbdvtx->get_z_err() << std::endl;
         mbd_z_vtx = m_mbdvtx->get_z();
         mbd_z_vtx_err = m_mbdvtx->get_z_err();
         mbd_t0 = m_mbdvtx->get_t();

@@ -66,7 +66,7 @@ class ZDC_SMD : public SubsysReco
   Gl1Packet *p_gl1 = nullptr;
   CaloPacketContainer *zdc_cont = nullptr;
 //  PHCompositeNode *mbdNode;
-  MbdOut *mbdout = nullptr;
+//  MbdOut *mbdout = nullptr;
   MbdVertexMapv1 *m_mbdvtxmap = nullptr;
   MbdVertex *m_mbdvtx = nullptr;
 
