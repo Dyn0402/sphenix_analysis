@@ -89,6 +89,8 @@ int ZDC_SMD::InitRun(PHCompositeNode * /*topNode*/)
 //____________________________________________________________________________..
 int ZDC_SMD::process_event(PHCompositeNode *topNode)
 {
+//  if (evtcnt > 500) { exit(0); }  // Kill early for testing
+
   // std::cout << "ZDC_SMD::process_event(PHCompositeNode *topNode) Processing Event" << std::endl;
   if (evtcnt % 10000 == 0)
   {
@@ -105,9 +107,9 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   // Get MBD/BBC Output Objects
 //  mbdout = findNode::getClass<MbdOut>(mdbNode, "MbdOut");
 
-  std::cout << std::endl << "Event: " << evtcnt << std::endl;
-  std::cout << "GL1Packet: " << p_gl1 << std::endl;
-  std::cout << "ZDCPackets: " << zdc_cont << std::endl;
+//  std::cout << std::endl << "Event: " << evtcnt << std::endl;
+//  std::cout << "GL1Packet: " << p_gl1 << std::endl;
+//  std::cout << "ZDCPackets: " << zdc_cont << std::endl;
 //  std::cout << "MbdOut: " << mbdout << std::endl;
 
   mbd_z_vtx = -999.0;
@@ -124,25 +126,24 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
   if (p_gl1)
   {
     bunchnumber = p_gl1->getBunchNumber();
-    std::cout << "Bunch number: " << bunchnumber << std::endl;
+//    std::cout << "Bunch number: " << bunchnumber << std::endl;
     if (evtcnt % 1000 == 0)
     {
       std::cout << bunchnumber << std::endl;
     }
-    if (evtcnt == 1200) { exit(0); }  // Kill early
     if (zdc_cont->get_npackets() != 1)
     {
       std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
       return Fun4AllReturnCodes::EVENT_OK;
     }
 
-      m_mbdvtxmap = findNode::getClass<MbdVertexMapv1>(topNode, "MbdVertexMap");
+//      m_mbdvtxmap = findNode::getClass<MbdVertexMapv1>(topNode, "MbdVertexMap");
       if (!m_mbdvtxmap)
       {
         std::cout << "Error, can't find MbdVertexMap" << std::endl;
       }
 
-      std::cout << "MbdVertexMap size: " << m_mbdvtxmap->size() << std::endl;
+//      std::cout << "MbdVertexMap size: " << m_mbdvtxmap->size() << std::endl;
       for (MbdVertexMap::ConstIter biter = m_mbdvtxmap->begin(); biter != m_mbdvtxmap->end(); ++biter)
       {
         m_mbdvtx = biter->second;
@@ -160,7 +161,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
       waveforms.clear();
       waveforms.reserve(p_zdc->iValue(0, "CHANNELS"));  // Chris: preallocation = speed improvement
 
-      std::cout << "Getting ZDC waveforms" << std::endl;
+//      std::cout << "Getting ZDC waveforms" << std::endl;
       // in this for loop we get: zdc_adc and smd_adc
       for (int c = 0; c < p_zdc->iValue(0, "CHANNELS"); c++)
       {
@@ -174,7 +175,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
         waveforms.push_back(waveform);
       }  // end channel loop
 
-      std::cout << "ZDC waveforms: " << waveforms.size() << std::endl;
+//      std::cout << "ZDC waveforms: " << waveforms.size() << std::endl;
 
 //      std::vector<std::vector<float>> fitresults_zdc;
 //      fitresults_zdc = WaveformProcessingFast->calo_processing_fast(waveforms);
@@ -194,7 +195,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
 
   evtcnt++;
 
-  std::cout << "Event: " << evtcnt << " ok" << std::endl;
+//  std::cout << "Event: " << evtcnt << " ok" << std::endl;
 
   return Fun4AllReturnCodes::EVENT_OK;
 }
