@@ -129,7 +129,7 @@ int ZDC_SMD::process_event(PHCompositeNode *topNode)
     {
       std::cout << bunchnumber << std::endl;
     }
-    if (ectcnt == 1200) { exit(0); }  // Kill early
+    if (evtcnt == 1200) { exit(0); }  // Kill early
     if (zdc_cont->get_npackets() != 1)
     {
       std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
