@@ -28,8 +28,12 @@ R__LOAD_LIBRARY(libZDC_SMD.so)
 R__LOAD_LIBRARY(libmbd.so)
 
 
-void Fun4All_ZDC_SMD(const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_2024p001-00042797-0000.root", const std::string &outname = "zdc_smd_42797_0000.root", int startEvent = 0, int nEvents = 10000)
-
+void Fun4All_ZDC_SMD(
+    const std::string &fname = "DST_TRIGGERED_EVENT_run2pp_new_2024p001-00042797-0000.root",
+    const std::string &outname = "zdc_smd_42797_0000.root",
+    int startEvent = 0,
+    int nEvents = 10000,
+    const std::string &dbtag = "2024p007")
 {
 
   Fun4AllServer *se = Fun4AllServer::instance();
