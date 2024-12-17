@@ -1,0 +1,241 @@
+#include "direct_photon.h"
+
+#include <calobase/TowerInfoDefs.h>
+#include <caloreco/CaloWaveformFitting.h>
+
+//#include <mbd/MbdOut.h>
+//#include <mbd/MbdPmtContainer.h>
+//#include <mbd/MbdGeom.h>
+//#include <mbd/MbdPmtHit.h>
+
+/// Tracking includes
+//#include <globalvertex/GlobalVertex.h>
+//#include <globalvertex/GlobalVertexMap.h>
+//#include <trackbase_historic/SvtxTrack.h>
+//#include <trackbase_historic/SvtxTrackMap.h>
+//#include <globalvertex/SvtxVertex.h>
+//#include <globalvertex/SvtxVertexMap.h>
+
+#include <calobase/TowerInfoDefs.h>
+#include <caloreco/CaloWaveformFitting.h>
+#include <ffarawobjects/CaloPacketContainerv1.h>
+#include <ffarawobjects/CaloPacketv1.h>
+//#include <ffarawobjects/Gl1Packetv1.h>
+#include <ffarawobjects/Gl1Packetv2.h>
+#include <fun4all/Fun4AllReturnCodes.h>
+
+#include <Event/packet.h>
+
+#include <fun4all/Fun4AllReturnCodes.h>
+#include <phool/PHCompositeNode.h>
+#include <phool/PHIODataNode.h>    // for PHIODataNode
+#include <phool/PHNodeIterator.h>  // for PHNodeIterator
+#include <phool/PHObject.h>        // for PHObject
+#include <phool/getClass.h>
+#include <phool/phool.h>
+#include <phool/recoConsts.h>
+
+#include <TFile.h>
+#include <TH1.h>
+#include <TH2.h>
+#include <TTree.h>
+#include <phool/PHCompositeNode.h>
+#include <cmath>
+#include <fstream>
+
+R__LOAD_LIBRARY(libuspin.so)
+
+//____________________________________________________________________________..
+DirectPhoton::DirectPhoton(const std::string &name)
+  : SubsysReco(name)
+{
+  std::cout << "DirectPhoton::DirectPhoton(const std::string &name) Calling ctor" << std::endl;
+}
+
+//____________________________________________________________________________..
+DirectPhoton::~DirectPhoton()
+{
+  std::cout << "DirectPhoton::~DirectPhoton() Calling dtor" << std::endl;
+}
+
+//____________________________________________________________________________..
+int DirectPhoton::Init(PHCompositeNode * /*topNode*/)
+{
+  std::cout << "DirectPhoton::Init(PHCompositeNode *topNode) Initializing" << std::endl;
+
+  mbd_vertex_tree = new TTree();
+  mbd_vertex_tree = new TTree("mbd_vertex_tree", "mbd_vertex_tree");
+  mbd_vertex_tree->SetDirectory(0);
+  mbd_vertex_tree->Branch("bunchnumber", &bunchnumber, "bunchnumber/I");
+  // polWaveforms->Branch("waveforms", &waveforms);
+  mbd_vertex_tree->Branch("mbd_z_vtx", &mbd_z_vtx, "mbd_z_vtx/F");
+  mbd_vertex_tree->Branch("mbd_z_vtx_err", &mbd_z_vtx_err, "mbd_z_vtx_err/F");
+  mbd_vertex_tree->Branch("mbd_t0", &mbd_t0, "mbd_t0/F");
+  mbd_vertex_tree->Branch("mbd_t0_err", &mbd_t0_err, "mbd_t0_err/F");
+
+  return Fun4AllReturnCodes::EVENT_OK;
+}
+
+//____________________________________________________________________________..
+int DirectPhoton::InitRun(PHCompositeNode * /*topNode*/)
+{
+  std::cout << "DirectPhoton::InitRun(PHCompositeNode *topNode) Initializing for Run XXX" << std::endl;
+
+  evtcnt = 0;
+
+  return Fun4AllReturnCodes::EVENT_OK;
+}
+
+//____________________________________________________________________________..
+int DirectPhoton::process_event(PHCompositeNode *topNode)
+{
+//  if (evtcnt > 500) { exit(0); }  // Kill early for testing
+
+  // std::cout << "DirectPhoton::process_event(PHCompositeNode *topNode) Processing Event" << std::endl;
+  if (evtcnt % 1000 == 0)
+  {
+    std::cout << "Event: " << evtcnt << std::endl;
+  }
+
+  p_gl1 = findNode::getClass<Gl1Packetv2>(topNode, "GL1Packet");
+  // zdc_cont = findNode::getClass<CaloPacketContainerv1>(topNode, "ZDCPackets");
+
+  // Find MBD Node
+//  mbdNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "MBD"));
+//  mbdNode = findNode::getClass<PHCompositeNode>(topNode, "MBDPackets");
+
+  // Get MBD/BBC Output Objects
+//  mbdout = findNode::getClass<MbdOut>(mdbNode, "MbdOut");
+
+//  std::cout << std::endl << "Event: " << evtcnt << std::endl;
+//  std::cout << "GL1Packet: " << p_gl1 << std::endl;
+//  std::cout << "ZDCPackets: " << zdc_cont << std::endl;
+//  std::cout << "MbdOut: " << mbdout << std::endl;
+
+  mbd_z_vtx = -999.0;
+  mbd_z_vtx_err = -999.0;
+  mbd_t0 = -999.0;
+  mbd_t0_err = -999.0;
+//  if (mbdout) {
+//    mbd_z_vtx = mbdout->get_zvtx();
+//    mbd_z_vtx_err = mbdout->get_zvtxerr();
+//    mbd_t0 = mbdout->get_t0();
+//    mbd_t0_err = mbdout->get_t0err();
+//  }
+
+  if (p_gl1)
+  {
+    bunchnumber = p_gl1->getBunchNumber();
+//    std::cout << "Bunch number: " << bunchnumber << std::endl;
+//    if (evtcnt % 1000 == 0)
+//    {
+//      std::cout << bunchnumber << std::endl;
+//    }
+    // if (zdc_cont->get_npackets() != 1)
+    // {
+      // std::cout << "Bad ZDC packet count: " << zdc_cont->get_npackets() << std::endl;
+      // return Fun4AllReturnCodes::EVENT_OK;
+    // }
+
+      m_mbdvtxmap = findNode::getClass<MbdVertexMapv1>(topNode, "MbdVertexMap");
+      if (!m_mbdvtxmap)
+      {
+        std::cout << "Error, can't find MbdVertexMap" << std::endl;
+      }
+
+//      std::cout << "MbdVertexMap size: " << m_mbdvtxmap->size() << std::endl;
+      for (MbdVertexMap::ConstIter biter = m_mbdvtxmap->begin(); biter != m_mbdvtxmap->end(); ++biter)
+      {
+        m_mbdvtx = biter->second;
+        std::cout << "MbdVertex: " << m_mbdvtx->get_z() << " +/- " << m_mbdvtx->get_z_err() << std::endl;
+        mbd_z_vtx = m_mbdvtx->get_z();
+        mbd_z_vtx_err = m_mbdvtx->get_z_err();
+        mbd_t0 = m_mbdvtx->get_t();
+        mbd_t0_err = m_mbdvtx->get_t_err();
+      }
+
+    // CaloPacket *p_zdc = zdc_cont->getPacket(0);
+
+//     if (p_zdc)
+//     {
+//       waveforms.clear();
+//       waveforms.reserve(p_zdc->iValue(0, "CHANNELS"));  // Chris: preallocation = speed improvement
+//
+// //      std::cout << "Getting ZDC waveforms" << std::endl;
+//       // in this for loop we get: zdc_adc and smd_adc
+//       for (int c = 0; c < p_zdc->iValue(0, "CHANNELS"); c++)
+//       {
+//         std::vector<float> waveform;  // Chris: preallocation = speed improvement
+//         waveform.reserve(p_zdc->iValue(0, "SAMPLES"));
+//
+//         for (int s = 0; s < p_zdc->iValue(0, "SAMPLES"); s++)
+//         {
+//           waveform.push_back(p_zdc->iValue(s, c));
+//         }  // end sample loop
+//         waveforms.push_back(waveform);
+//       }  // end channel loop
+
+//      std::cout << "ZDC waveforms: " << waveforms.size() << std::endl;
+
+//      std::vector<std::vector<float>> fitresults_zdc;
+//      fitresults_zdc = WaveformProcessingFast->calo_processing_fast(waveforms);
+//
+//      std::vector<float> result;
+//      result = fitresults_zdc.at(0);
+//
+//      std::vector<float> resultFast = anaWaveformFast(p_zdc, c);  // fast waveform fitting
+//      float signalFast = resultFast.at(0);
+//      float timingFast = resultFast.at(1);
+//      float pedFast = resultFast.at(2);
+
+//      }  // end channel loop
+      mbd_vertex_tree->Fill();
+    }  // end if p_zdc good
+  }  // end if p_gl1 good
+
+  evtcnt++;
+
+//  std::cout << "Event: " << evtcnt << " ok" << std::endl;
+
+  return Fun4AllReturnCodes::EVENT_OK;
+}
+
+//____________________________________________________________________________..
+int DirectPhoton::End(PHCompositeNode * /*topNode*/)
+{
+  std::cout << "DirectPhoton::End(PHCompositeNode *topNode) This is the End..." << std::endl;
+  TFile *ofile = new TFile(outfile.c_str(), "RECREATE");
+
+  mbd_vertex_tree->Write();
+
+  ofile->Write();
+  ofile->Close();
+  delete (mbd_vertex_tree);
+
+  return Fun4AllReturnCodes::EVENT_OK;
+}
+
+// std::vector<float> DirectPhoton::anaWaveformFast(CaloPacket *p, const int channel)
+// {
+//   std::vector<float> waveform;
+//   // Chris: preallocation = speed improvement
+//   waveform.reserve(p->iValue(0, "SAMPLES"));
+//   for (int s = 0; s < p->iValue(0, "SAMPLES"); s++)
+//   {
+//     waveform.push_back(p->iValue(s, channel));
+//   }
+//   std::vector<std::vector<float>> multiple_wfs;
+//   multiple_wfs.push_back(waveform);
+//
+//   std::vector<std::vector<float>> fitresults_zdc;
+//   fitresults_zdc = WaveformProcessingFast->calo_processing_fast(multiple_wfs);
+//
+//   std::vector<float> result;
+//   result = fitresults_zdc.at(0);
+//   return result;
+// }
+
+void DirectPhoton::setFileName(const std::string &fname)
+{
+  outfile = fname;
+}
