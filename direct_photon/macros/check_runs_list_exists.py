@@ -33,13 +33,18 @@ def main():
         return
 
     # Check for each run number if the input file exists
+    existing_runs = []
     for run_number in run_numbers:
         run_number = int(run_number)
         input_file = build_input_file(run_number)
         if os.path.isfile(input_file):
             print(f"File exists: {input_file}")
+            existing_runs.append(run_number)
         else:
             print(f"File NOT found: {input_file}")
+    print('\nExisting runs:')
+    for run in existing_runs:
+        print(run)
     print('donzo')
 
 
