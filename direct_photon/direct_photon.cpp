@@ -189,8 +189,8 @@ int DirectPhoton::process_event(PHCompositeNode *topNode)
 //      float pedFast = resultFast.at(2);
 
 //      }  // end channel loop
-      mbd_vertex_tree->Fill();
-    }  // end if p_zdc good
+    // }  // end if p_zdc good
+  mbd_vertex_tree->Fill();
   }  // end if p_gl1 good
 
   evtcnt++;
