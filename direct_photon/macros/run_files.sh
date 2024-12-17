@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ensure ROOT is sourced
-source /path/to/your/root/setup.sh
-
 # Macro to run
 macro="Fun4All_direct_photon.C"
 
