@@ -1,11 +1,11 @@
-Universe 	= vanilla
-Executable 	= run_condor.sh
-notification 	= Never
-Arguments       = $(Process)
-Output  	= log/condor-dneffsph_$(process).out
-Error           = log/condor-dneffsph_$(process).err
-Log  		= /tmp/condor-dneffsph_$(process).log
-Initialdir  	= /sphenix/user/dneffsph/sphenix_analysis/direct_photon/macros
+Universe = vanilla
+Executable = run_condor.sh
+notification = Never
+Arguments = $(run)
+Output = log/condor-dneffsph_$(process).out
+Error = log/condor-dneffsph_$(process).err
+Log = /tmp/condor-dneffsph_$(process).log
+Initialdir = /sphenix/user/dneffsph/sphenix_analysis/direct_photon/macros
 # Jobs by default use 1.5Gb of RAM, you need to ask for more if needed
 # with request_memory. Be mindful - if you request too little your jobs will be evicted, if you request way too much it will take longer for your job to start
 #request_memory = 4096MB
