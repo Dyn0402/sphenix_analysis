@@ -1,10 +1,16 @@
 #!/bin/bash
 
+if [ -z "$1" ]; then
+    echo "Error: Missing run number argument."
+    echo "Usage: $0 <run_number>"
+    exit 1
+fi
+
 export USER="$(id -u -n)"
 export LOGNAME=${USER}
 export HOME=/sphenix/u/${LOGNAME}
 
-source ${HOME}/.bashrc
+source ${HOME}/.bash_profile
  
 #print the environment - needed for debugging
 #printenv
@@ -40,6 +46,6 @@ echo "Running macro on file: $input_file"
 echo "Output name: $output_name"
 
 # Run the ROOT macro
-root -b -q "${macro}(\"${input_file}\", \"${output_name}\", ${start_event}, ${end_event}, \"${dbtag}\")"
+root -b -q "${macro_name}(\"${input_file}\", \"${output_name}\", ${start_event}, ${end_event}, \"${dbtag}\")"
 
 #=========================================================#
