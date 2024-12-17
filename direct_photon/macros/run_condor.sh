@@ -12,17 +12,17 @@ source ${HOME}/.bashrc
 # Macro to run
 macro_name="Fun4All_direct_photon.C"
 
-ana_version = "ana437"
-dbtag = "2024p007"
+ana_version="ana437"
+dbtag="2024p007"
 
 # Base directory for input files
 base_dir="/sphenix/lustre01/sphnxpro/physics/slurp/calophysics/${ana_version}_${dbtag}"
 
 # Root number, for now just run one root file per run
-root_number = 100
+root_number=100
 
-start_event = 0
-end_event = 10000  # Default number of runs in a file
+start_event=0
+end_event=10000  # Default number of runs in a file
 
 # Function to calculate run directory
 get_run_directory() {
