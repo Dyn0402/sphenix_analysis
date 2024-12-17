@@ -147,7 +147,7 @@ int DirectPhoton::process_event(PHCompositeNode *topNode)
       for (MbdVertexMap::ConstIter biter = m_mbdvtxmap->begin(); biter != m_mbdvtxmap->end(); ++biter)
       {
         m_mbdvtx = biter->second;
-        std::cout << "MbdVertex: " << m_mbdvtx->get_z() << " +/- " << m_mbdvtx->get_z_err() << std::endl;
+        // std::cout << "MbdVertex: " << m_mbdvtx->get_z() << " +/- " << m_mbdvtx->get_z_err() << std::endl;
         mbd_z_vtx = m_mbdvtx->get_z();
         mbd_z_vtx_err = m_mbdvtx->get_z_err();
         mbd_t0 = m_mbdvtx->get_t();
