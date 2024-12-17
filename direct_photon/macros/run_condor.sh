@@ -38,7 +38,7 @@ get_run_directory() {
     printf "run_%08d_%08d" "$lower_bound" "$upper_bound"
 }
 
-input_file=$(printf "DST_TRIGGERED_EVENT_run2pp_${ana_version}_${dbtag}-%08d-%05d.root" "${1}" "${root_number}")
+input_file=$(printf "${base_dir}/DST_TRIGGERED_EVENT_run2pp_${ana_version}_${dbtag}-%08d-%05d.root" "${1}" "${root_number}")
 output_name=$(printf "run_%08d_file_%05d.root" "${1}" "${root_number}")
 
 #=================== Run with condor =========================#
