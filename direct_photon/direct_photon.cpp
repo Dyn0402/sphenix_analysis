@@ -15,6 +15,10 @@
 //#include <trackbase_historic/SvtxTrackMap.h>
 //#include <globalvertex/SvtxVertex.h>
 //#include <globalvertex/SvtxVertexMap.h>
+#include <globalvertex/GlobalVertex.h>
+#include <globalvertex/GlobalVertexMap.h>
+#include <globalvertex/MbdVertex.h>
+#include <globalvertex/MbdVertexMap.h>
 
 #include <calobase/TowerInfoDefs.h>
 #include <caloreco/CaloWaveformFitting.h>
@@ -72,6 +76,10 @@ int DirectPhoton::Init(PHCompositeNode * /*topNode*/)
   mbd_vertex_tree->Branch("mbd_z_vtx_err", &mbd_z_vtx_err, "mbd_z_vtx_err/F");
   mbd_vertex_tree->Branch("mbd_t0", &mbd_t0, "mbd_t0/F");
   mbd_vertex_tree->Branch("mbd_t0_err", &mbd_t0_err, "mbd_t0_err/F");
+  mbd_vertex_tree->Branch("global_vtx_z", &global_vtx_z, "global_vtx_z/F");
+  mbd_vertex_tree->Branch("trigger_vector", &trigger_vector, "trigger_vector/I");
+  mbd_vertex_tree->Branch("live_vector", &live_vector, "live_vector/I");
+  mbd_vertex_tree->Branch("scaled_vector", &scaled_vector, "scaled_vector/I");
 
   return Fun4AllReturnCodes::EVENT_OK;
 }
@@ -116,6 +124,9 @@ int DirectPhoton::process_event(PHCompositeNode *topNode)
   mbd_z_vtx_err = -999.0;
   mbd_t0 = -999.0;
   mbd_t0_err = -999.0;
+  global_vtx_z = -999.0;
+  live_vector = -999;
+  scaled_vector = -999;
 //  if (mbdout) {
 //    mbd_z_vtx = mbdout->get_zvtx();
 //    mbd_z_vtx_err = mbdout->get_zvtxerr();
@@ -126,6 +137,9 @@ int DirectPhoton::process_event(PHCompositeNode *topNode)
   if (p_gl1)
   {
     bunchnumber = p_gl1->getBunchNumber();
+    trigger_vector = p_gl1->getTriggerVector();
+    live_vector = p_gl1->getLiveVector();
+    scaled_vector = p_gl1->getScaledVector();
 //    std::cout << "Bunch number: " << bunchnumber << std::endl;
 //    if (evtcnt % 1000 == 0)
 //    {
@@ -153,6 +167,30 @@ int DirectPhoton::process_event(PHCompositeNode *topNode)
         mbd_t0 = m_mbdvtx->get_t();
         mbd_t0_err = m_mbdvtx->get_t_err();
       }
+
+      GlobalVertexMap *vtxContainer = findNode::getClass<GlobalVertexMap>(topNode,"GlobalVertexMap");
+      if (!vtxContainer)
+      {
+        std::cout << PHWHERE << "neutralMesonTSSA::process_event - Fatal Error - GlobalVertexMap node is missing. Please turn on the do_global flag in the main macro in order to reconstruct the global vertex." << std::endl;
+        assert(vtxContainer);  // force quit
+        return 0;
+      }
+      /* std::cout << "Global vertex map has size " << vtxContainer->size() << std::endl; */
+      if (vtxContainer->empty())
+      {
+        // Final version:
+        /* std::cout << PHWHERE << "neutralMesonTSSA::process_event - Fatal Error - GlobalVertexMap node is empty. Please turn on the do_global flag in the main macro in order to reconstruct the global vertex." << std::endl; */
+        return Fun4AllReturnCodes::ABORTEVENT;
+      }
+
+      // Global vertex container exists
+      gVtx = vtxContainer->begin()->second;
+      if (!gVtx)
+      {
+        /* std::cout << PHWHERE << "neutralMesonTSSA::process_event Could not find vtx from vtxContainer"  << std::endl; */
+        return Fun4AllReturnCodes::ABORTEVENT;
+      }
+      global_vtx_z = gVtx->get_z();
 
     // CaloPacket *p_zdc = zdc_cont->getPacket(0);
 

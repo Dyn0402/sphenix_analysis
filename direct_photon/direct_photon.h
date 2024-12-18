@@ -4,9 +4,9 @@
 #define DIRECT_PHOTON_H
 
 #include <fun4all/SubsysReco.h>
-#include <globalvertex/MbdVertex.h>
+//#include <globalvertex/MbdVertex.h>
 // #include <globalvertex/MbdVertexv2.h>
-#include <globalvertex/MbdVertexMapv1.h>
+//#include <globalvertex/MbdVertexMapv1.h>
 
 #include <string>
 #include <cmath>
@@ -24,6 +24,7 @@ class MbdOut;
 
 class MbdVertex;
 class MbdVertexMap;
+class GlobalVertex;
 
 class TH1;
 class TH2;
@@ -57,6 +58,11 @@ class DirectPhoton : public SubsysReco
   float mbd_z_vtx_err = 0.0;
   float mbd_t0 = 0.0;
   float mbd_t0_err = 0.0;
+  float global_vtx_z = 0.0;
+
+  int trigger_vector = 0;
+  int live_vector = 0;
+  int scaled_vector = 0;
 
   // int evtseq_gl1 = 0;
 
@@ -70,6 +76,7 @@ class DirectPhoton : public SubsysReco
 //  MbdOut *mbdout = nullptr;
   MbdVertexMapv1 *m_mbdvtxmap = nullptr;
   MbdVertex *m_mbdvtx = nullptr;
+  GlobalVertex *gVtx = nullptr;
 
   // std::vector<float> anaWaveformFast(CaloPacket *p, const int channel);
 
