@@ -74,7 +74,7 @@ class DirectPhoton : public SubsysReco
   // CaloPacketContainer *zdc_cont = nullptr;
 //  PHCompositeNode *mbdNode;
 //  MbdOut *mbdout = nullptr;
-  MbdVertexMapv1 *m_mbdvtxmap = nullptr;
+  MbdVertexMap *m_mbdvtxmap = nullptr;
   MbdVertex *m_mbdvtx = nullptr;
   GlobalVertex *gVtx = nullptr;
 
