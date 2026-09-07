@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="sftp.sdcc.bnl.gov" id="9acd905e-1555-4868-8545-589942aedc8d" keyPath="$USER_HOME$/.ssh/id_rsa" port="22" nameFormat="DESCRIPTIVE" username="dneffsph" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>
