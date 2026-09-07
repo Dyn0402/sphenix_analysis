@@ -1,12 +1,11 @@
 // Tell emacs that this is a C++ source
 //  -*- C++ -*-.
-#ifndef DIRECT_PHOTON_H
-#define DIRECT_PHOTON_H
+#ifndef OFFLINESMDTESTING_DST_H
+#define OFFLINESMDTESTING_DST_H
 
 #include <fun4all/SubsysReco.h>
-//#include <globalvertex/MbdVertex.h>
-// #include <globalvertex/MbdVertexv2.h>
-//#include <globalvertex/MbdVertexMapv1.h>
+#include <globalvertex/MbdVertex.h>
+#include <globalvertex/MbdVertexMapv1.h>
 
 #include <string>
 #include <cmath>
@@ -24,7 +23,6 @@ class MbdOut;
 
 class MbdVertex;
 class MbdVertexMap;
-class GlobalVertex;
 
 class TH1;
 class TH2;
@@ -32,13 +30,13 @@ class TTree;
 
 using namespace std;
 
-class DirectPhoton : public SubsysReco
+class ZDC_SMD : public SubsysReco
 {
  public:
 
-  DirectPhoton(const std::string &name = "direct_photon");
+  ZDC_SMD(const std::string &name = "ZDC_SMD");
 
-  ~DirectPhoton() override;
+  ~ZDC_SMD() override;
 
   int Init(PHCompositeNode *topNode) override;
   int InitRun(PHCompositeNode *topNode) override;
@@ -48,21 +46,16 @@ class DirectPhoton : public SubsysReco
   void setFileName(const std::string &fname);
 
  protected:
-  // CaloWaveformFitting *WaveformProcessingFast = nullptr;
-  TTree *mbd_vertex_tree;
+  CaloWaveformFitting *WaveformProcessingFast = nullptr;
+  TTree *polWaveforms;
 
-  // vector<vector<float>> waveforms;
+  vector<vector<float>> waveforms;
 
   int bunchnumber = 0;
   float mbd_z_vtx = 0.0;
   float mbd_z_vtx_err = 0.0;
   float mbd_t0 = 0.0;
   float mbd_t0_err = 0.0;
-  float global_vtx_z = 0.0;
-
-  int trigger_vector = 0;
-  int live_vector = 0;
-  int scaled_vector = 0;
 
   // int evtseq_gl1 = 0;
 
@@ -71,14 +64,13 @@ class DirectPhoton : public SubsysReco
   // uint64_t BCO_zdc = 0;
 
   Gl1Packet *p_gl1 = nullptr;
-  // CaloPacketContainer *zdc_cont = nullptr;
+  CaloPacketContainer *zdc_cont = nullptr;
 //  PHCompositeNode *mbdNode;
 //  MbdOut *mbdout = nullptr;
-  MbdVertexMap *m_mbdvtxmap = nullptr;
+  MbdVertexMapv1 *m_mbdvtxmap = nullptr;
   MbdVertex *m_mbdvtx = nullptr;
-  GlobalVertex *gVtx = nullptr;
 
-  // std::vector<float> anaWaveformFast(CaloPacket *p, const int channel);
+  std::vector<float> anaWaveformFast(CaloPacket *p, const int channel);
 
   std::string outfile  = "";
   
@@ -87,4 +79,4 @@ class DirectPhoton : public SubsysReco
 
 };
 
-#endif // DIRECT_PHOTON_H
+#endif // OFFLINESMDTESTING_DST_H
